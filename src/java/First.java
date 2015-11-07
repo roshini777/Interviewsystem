@@ -34,7 +34,7 @@ public class First extends HttpServlet {
     try{
         
     Class.forName("com.mysql.jdbc.Driver");
-            con=  DriverManager.getConnection( "jdbc:mysql://localhost/interview", "root", "roshini");
+            con=  DriverManager.getConnection( "jdbc:mysql://localhost:3306/interview", "root", "roshini");
     
            
   
@@ -60,18 +60,22 @@ public class First extends HttpServlet {
             con=connect();
             ResultSet rs;
             PreparedStatement st=null;
-   String sql="select * from login where type=? and username=? and password=?";
+   String sql="select * from login where tid=? and username=? and password=?";
     st=con.prepareStatement(sql);
    st.setString(1,type);
    st.setString(2,uname);
    st.setString(3,pass);
-  
+  String a="A";
+  String u="U";
    rs=st.executeQuery();
+   String a3=null;
    String a1=null;
    String a2=null;
        int count=0;
+       
        while(rs.next())
        {
+           a3=rs.getString(1);
            a1=rs.getString(2);
            a2=rs.getString(3);
           count++;
@@ -79,13 +83,32 @@ public class First extends HttpServlet {
       
             if(count==1)
                     {
+                     if(a3.equals(u))
+                     {
+                         
+                         
            System.out.println("success");
                HttpSession session=request.getSession();
                session.setAttribute("user", uname);
                RequestDispatcher rq=request.getRequestDispatcher("Second");
                rq.forward(request,response);
-               
-          }
+                     }
+                     if(a3.equals(a))
+                     {
+                         HttpSession session=request.getSession();
+                         session.setAttribute("admin",uname);
+                         RequestDispatcher rq=request.getRequestDispatcher("third");
+                         rq.forward(request,response);
+                     }
+             
+              
+   
+                    }
+            else
+            {
+                 
+                 response.sendRedirect("index.jsp");
+            }
        
         } 
         catch(Exception e)
@@ -96,6 +119,8 @@ public class First extends HttpServlet {
             out.close();
         }
     }
+   
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

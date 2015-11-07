@@ -1,0 +1,215 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Content-Script-Type" content="text/javascript">
+<meta name="Content-Style-Type" content="text/css">
+    <title>Quizzer</title>
+    <style type="text/css">
+        body {
+            background:#E3E1DC;
+            font-size:16px;
+            font-family:Helvetica, Arial;
+            line-height:1.2em;
+            color:#222222;
+        }
+
+        pre {
+            font-family:Consolas, Courier;
+            font-size: 12px;
+            color:#444444;
+            line-height:12px;
+            margin-left:30px;
+            margin-top:-28px;
+        }
+
+        .instructions {
+            margin-left:25px;
+        }
+
+        .button {
+            margin-left:10px;
+            margin-bottom:120px;
+            width:200px;
+            height:50px;
+        }
+
+        .question {
+            background:#F1E6D4;
+            padding:15px;
+            margin:10px;
+        }
+
+        .odd {
+            background:#9F9694;
+        }
+
+        .wrong {
+            border-left:#BA3D49 5px solid;
+            padding-left:10px;
+        }
+    </style>
+<script type="text/javascript">
+
+COUNTER_START = 60
+
+function tick () {
+	if (document.getElementById ('counter').firstChild.data > 0) {
+		document.getElementById ('counter').firstChild.data = document.getElementById ('counter').firstChild.data - 1
+		setTimeout ('tick()', 1000)
+	} else {
+		document.getElementById ('counter').firstChild.data = 'Time is up!'
+                CheckQuiz();
+	}
+}
+
+if (document.getElementById) onload = function () {
+	var t = document.createTextNode (COUNTER_START)
+	var p = document.createElement ('P')
+	p.appendChild (t)
+	p.setAttribute ('id', 'counter')
+	
+	var body = document.getElementsByTagName ('BODY')[0]
+	var firstChild = body.getElementsByTagName ('*')[0]
+	
+	body.insertBefore (p, firstChild)
+	tick()
+}
+
+        // number of questions in the quiz, this must be set exactly
+        var totalQuestions = 5;
+
+        // arrays to store answers, and user submited answers.
+        var answers = new Array;
+        var userAnswers = new Array;
+
+        // quiz answers
+        answers[1] = "A";
+        answers[2] = "A";
+        answers[3] = "A";
+        answers[4] = "A";
+        answers[5] = "A";
+
+        // sets the users answer selection to the appropriate array element
+        // in the userAnswers array.
+        // questionNumber is the question div id as well as the userAnswers
+        // array element index to store the answer in.
+        // answerSelection is the value of the selected answer from a question
+        function SetAnswer(questionNumber, answerSelection) {
+            userAnswers[questionNumber] = answerSelection;
+        }
+
+        // applies the .wrong class styling to any question div that is incorrect
+        function MarkIncorrectQuestions() {
+            for(i = 1; i <= totalQuestions; i++) {
+                if(answers[i] != userAnswers[i]) {
+                    document.getElementById(i).className += " wrong";
+                }
+            }
+        }
+
+        // counts the number of correct answers
+        // returns the number of correct answers
+        function GetScore() {
+            var score = 0;
+            for(i = 1; i <= totalQuestions; i++) {
+                if(userAnswers[i] == answers[i])
+                    score++;
+            }
+            return score;
+        }
+
+        // sets classes for each question div to its default styling.
+        function ApplyDefaultQuestionStyles() {
+            for(i = 1; i <= totalQuestions; i++) {
+                if(i % 2 == 0) {
+                    document.getElementById(i).className = "question";
+                }
+                else {
+                    document.getElementById(i).className = "question odd";
+                }
+            }
+        }
+
+        // calls all appropriate functions in order to check answers and mark
+        // incorrect questions.
+        function CheckQuiz() {
+            ApplyDefaultQuestionStyles();
+            var totalQuestions = '5';
+            var score = GetScore();
+            MarkIncorrectQuestions();
+            alert("You scored: " + score + " out of " + totalQuestions + ".");
+            //document.write("<h1>hello</h1>");
+        }
+
+    function result(score,totalQuestions){
+              document.write("Score" +score);
+            }
+
+    </script>
+</head>
+
+<body onLoad="ApplyDefaultQuestionStyles()">
+    <div class="instructions">
+        <A HREF="quizhome.jsp">Home Page!</A>
+        <h1>The Personality Quiz</h1>
+
+    </div>
+
+     <form>
+        <div id="1">
+            <p><strong>Question 1</strong></p>
+            <p>How Bold are you?</p>
+            <p><input type="radio" value="A" onClick="SetAnswer(1, this.value)" name="radiobutton"> Very</p>
+            <p><input type="radio" value="B" onClick="SetAnswer(1, this.value)" name="radiobutton">Somewhat. Average.</p>
+            <p><input type="radio" value="C" onClick="SetAnswer(1, this.value)" name="radiobutton">Little</p>
+            <p><input type="radio" value="D" onClick="SetAnswer(1, this.value)" name="radiobutton">Not at all</p>
+        </div>
+
+       <div id="1">
+            <p><strong>Question 2</strong></p>
+            <p>How much of a perfectionist are you?</p>
+            <p><input type="radio" value="A" onClick="SetAnswer(1, this.value)" name="radiobuttn2"> Very</p>
+            <p><input type="radio" value="B" onClick="SetAnswer(1, this.value)" name="radiobuttn2">Somewhat. Average.</p>
+            <p><input type="radio" value="C" onClick="SetAnswer(1, this.value)" name="radiobuttn2">Little</p>
+            <p><input type="radio" value="D" onClick="SetAnswer(1, this.value)" name="radiobuttn2">Not at all</p>
+        </div>
+
+        <div id="1">
+            <p><strong>Question 3</strong></p>
+            <p>How Emotionally Strong are you??</p>
+            <p><input type="radio" value="A" onClick="SetAnswer(1, this.value)" name="radiobutton2"> Very</p>
+            <p><input type="radio" value="B" onClick="SetAnswer(1, this.value)" name="radiobutton2">Somewhat. Average.</p>
+            <p><input type="radio" value="C" onClick="SetAnswer(1, this.value)" name="radiobutton2">Little</p>
+            <p><input type="radio" value="D" onClick="SetAnswer(1, this.value)" name="radiobutton2">Not at all</p>
+        </div>
+
+       <div id="1">
+            <p><strong>Question 4</strong></p>
+            <p>How Calm and Composed are you?</p>
+            <p><input type="radio" value="A" onClick="SetAnswer(1, this.value)" name="radibutton2"> Very</p>
+            <p><input type="radio" value="B" onClick="SetAnswer(1, this.value)" name="radibutton2">Somewhat. Average.</p>
+            <p><input type="radio" value="C" onClick="SetAnswer(1, this.value)" name="radibutton2">Little</p>
+            <p><input type="radio" value="D" onClick="SetAnswer(1, this.value)" name="radibutton2">Not at all</p>
+        </div>
+
+        <div id="1">
+            <p><strong>Question 5</strong></p>
+            <p>How Patient are you?</p>
+            <p><input type="radio" value="A" onClick="SetAnswer(1, this.value)" name="adiobutton2"> Very</p>
+            <p><input type="radio" value="B" onClick="SetAnswer(1, this.value)" name="adiobutton2">Somewhat. Average.</p>
+            <p><input type="radio" value="C" onClick="SetAnswer(1, this.value)" name="adiobutton2">Little</p>
+            <p><input type="radio" value="D" onClick="SetAnswer(1, this.value)" name="adiobutton2">Not at all</p>
+        </div>
+
+<p>
+
+
+
+        <input type="submit" class="ui-button" onClick="CheckQuiz()" value="Submit Answers" name="submitButton" class="button"></p>
+
+
+    </form> 
+</body>
+
+
+
