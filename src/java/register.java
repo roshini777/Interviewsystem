@@ -1,7 +1,9 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
+- */
+
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,10 +26,10 @@ public class register extends HttpServlet {
     public static Connection connect()
 {Connection con=null;
     try{
-        
+          
     Class.forName("com.mysql.jdbc.Driver");
-            con=  DriverManager.getConnection( "jdbc:mysql://localhost/interview", "root", "roshini");
-    
+            con=  DriverManager.getConnection( "jdbc:mysql://localhost:3306/interview", "root", "roshini");
+  
            
   
     }
@@ -50,6 +52,7 @@ public class register extends HttpServlet {
              if (session!=null)
           {
              
+            
               RequestDispatcher rd=request.getRequestDispatcher("reg.jsp");
               rd.include(request,response);
              
@@ -59,48 +62,46 @@ public class register extends HttpServlet {
           {
               System.out.println("failure");
           }
-             String a="USER";
+             String a="U";
 String b=request.getParameter("uname");
 String c=request.getParameter("pass");
-String d=request.getParameter("fname");
-String e=request.getParameter("name");
-String f=request.getParameter("age");
+String d=request.getParameter("name");
 String g=request.getParameter("address");
 String h=request.getParameter("qual");
 String i=request.getParameter("email");
-String j=request.getParameter("pno");
+String j=request.getParameter("lost");
              Connection con=null;   
             con=connect();
             ResultSet rs;
-            PreparedStatement st=null;
+            PreparedStatement st=null,st1=null;
+            PreparedStatement s=null,s1=null;
              String sq="insert into login values(?,?,?)";
              st=con.prepareStatement(sq);
              st.setString(1,a);
-        st.setString(2,b);
-        st.setString(3,c);
+             st.setString(2,b);
+             st.setString(3,c);
         int l=st.executeUpdate();
-        st=null;
-            String sql="insert into pregister values(?,?,?,?,?,?,?,?,?,?)";
-    st=con.prepareStatement(sql);
-    st.setString(1,a);
-st.setString(2,b);
-st.setString(3,c);
-st.setString(4,d);
-st.setString(5,e);
-st.setString(6,f);
-st.setString(7,g);
-st.setString(8,h);
-st.setString(9,i);
-st.setString(10,j);
-int k=st.executeUpdate();
-            
-                out.println ("<html><body><script>alert('REGISTERED SUCCESSFULLY!click on the take me to login page button');</script></body></html>");
+        st=null; String sql1;
+            String sql="insert into user values(?,?,?,?,?)";
+    s=con.prepareStatement(sql);
+s.setString(1,b);
+s.setString(2,d);
+s.setString(3,i);
+s.setString(4,g);
+s.setString(5,h);
+sql1="insert into lostpassword values(?,?)";
+    s1=con.prepareStatement(sql1);
+s1.setString(1,b);
+s1.setString(2,j);
+int k=s.executeUpdate();
+            int v=s1.executeUpdate();
+            out.println ("<html><body><script>alert('REGISTERED SUCCESSFULLY!!!');</script></body></html>");
                  RequestDispatcher rd=request.getRequestDispatcher("First");
             rd.include(request, response);
             
         }
         catch(Exception e)
-        {
+        { out.println ("<html><body><script>alert('ENTER UNIQUE USERNAME and CODE');</script></body></html>");
            System.out.println(e.getMessage());
         }
         finally {            
